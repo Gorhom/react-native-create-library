@@ -47,8 +47,7 @@ module.exports = [{
 `;
     }
 
-    return `
-# ${moduleName}
+    return `# ${moduleName}
 
 ## Getting started
 
@@ -74,16 +73,13 @@ ${name};
 }, {
   name: () => 'package.json',
   content: ({ moduleName, platforms, githubAccount, authorName, authorEmail, license }) => {
-    let dependencies = `
-    "react": "16.0.0-alpha.6",
+    let dependencies = `"react": "16.0.0-alpha.6",
     "react-native": "^0.44.1"`;
     if (platforms.indexOf('windows') >= 0) {
       dependencies += `,
-    "react-native-windows": "0.41.0-rc.1"
-`;
+    "react-native-windows": "0.41.0-rc.1"`;
     }
-    return `
-{
+    return `{
   "name": "${moduleName}",
   "title": "${moduleName.split('-').map(word => word[0].toUpperCase() + word.substr(1)).join(' ')}",
   "version": "1.0.0",
@@ -111,15 +107,14 @@ ${name};
     ${dependencies}
   },
   "devDependencies": {
-    ${dependencies} 
+    ${dependencies}
   }
 }
 `;
   },
 }, {
   name: () => 'index.js',
-  content: ({ name }) => `
-import { NativeModules } from 'react-native';
+  content: ({ name }) =>`import { NativeModules } from 'react-native';
 
 const { ${name} } = NativeModules;
 
@@ -128,8 +123,7 @@ export default ${name};
 }, {
   name: () => '.gitignore',
   content: ({ platforms }) => {
-    let content = `
-# OSX
+    let content =`# OSX
 #
 .DS_Store
 
@@ -138,7 +132,7 @@ export default ${name};
 node_modules/
 npm-debug.log
 yarn-error.log
-  `;
+`;
 
     if (platforms.indexOf('ios') >= 0) {
       content += `
@@ -162,7 +156,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
-      `;
+`;
     }
 
     if (platforms.indexOf('android') >= 0) {
@@ -180,7 +174,7 @@ local.properties
 buck-out/
 \\.buckd/
 *.keystore
-      `;
+`;
     }
 
     return content;
@@ -189,7 +183,16 @@ buck-out/
   name: () => '.gitattributes',
   content: ({ platforms }) => {
     if (platforms.indexOf('ios') >= 0) {
-      return '*.pbxproj -text';
+      return '*.pbxproj -text\n';
+    }
+
+    return '';
+  }
+}, {
+  name: () => '.npmignore',
+  content: ({ generateExample }) => {
+    if (generateExample) {
+      return 'example\n';
     }
 
     return '';
