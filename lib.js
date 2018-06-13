@@ -67,7 +67,9 @@ module.exports = ({
       identifier, it is recommended to customize the package identifier.`);
   }
 
-  return createFolder(name)
+  const moduleName = `${modulePrefix}-${paramCase(name)}`;
+  const rootFolderName = moduleName;
+  return createFolder(rootFolderName)
     .then(() => {
       return Promise.all(templates.filter((template) => {
         if (template.platform) {
@@ -81,7 +83,7 @@ module.exports = ({
         }
         const templateArgs = {
           name: `${prefix}${pascalCase(name)}`,
-          moduleName: `${modulePrefix}-${paramCase(name)}`,
+          moduleName,
           packageIdentifier,
           namespace: namespace || pascalCase(name).split(/(?=[A-Z])/).join('.'),
           platforms,
@@ -92,7 +94,7 @@ module.exports = ({
           generateExample,
         };
 
-        return renderTemplate(name, template, templateArgs);
+        return renderTemplate(rootFolderName, template, templateArgs);
       }));
     })
     .then(() => {
@@ -101,7 +103,7 @@ module.exports = ({
         return Promise.resolve();
       }
 
-      const initExampleOptions = { cwd: `./${name}`, stdio: 'inherit' };
+      const initExampleOptions = { cwd: `./${rootFolderName}`, stdio: 'inherit' };
       return exec('react-native init example', initExampleOptions)
         .then(() => {
           // Execute the example template
