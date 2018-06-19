@@ -1,7 +1,5 @@
 /* eslint max-len: 0 */
 
-let templates = []
-
 module.exports = [{
   name: () => 'scripts/examples_postinstall.js',
   content: () =>

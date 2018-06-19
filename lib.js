@@ -110,7 +110,7 @@ module.exports = ({
           const exampleTemplates = require('./templates/example');
           return Promise.all(
             exampleTemplates.map((template) => {
-              return renderTemplate(name, template);
+              return renderTemplate(rootFolderName, template);
             })
           );
         })
@@ -118,7 +118,7 @@ module.exports = ({
           // Adds and link the new library
           return new Promise((resolve, reject) => {
             // Add postinstall script to example package.json
-            const pathExampleApp = `./${name}/example`;
+            const pathExampleApp = `./${rootFolderName}/example`;
             const moduleName = `${modulePrefix}-${paramCase(name)}`;
             npmAddScriptSync(`${pathExampleApp}/package.json`, {
               key: 'postinstall',
